@@ -1,16 +1,23 @@
 cmake_minimum_required(VERSION 3.21)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 if ("${CMAKE_SYSTEM_NAME}" STREQUAL "iOS" OR IOS)
-    set(CMAKE_OSX_ARCHITECTURES "arm64")
+    set(CMAKE_OSX_ARCHITECTURES arm64)
 else()
-    set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64")
+    set(CMAKE_OSX_ARCHITECTURES arm64;x86_64)
 endif()
+
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 
-project(TelegramDeathNotifier VERSION 1.0.0)
+# Обход ошибки несовместимости версий Clang и MSVC на GitHub Actions
+add_compile_definitions(_ALLOW_COMPILER_AND_STL_VERSION_MISMATCH)
 
-file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS src/*.cpp)
+project(TelegramDeathNotifier VERSION 1.1.0)
+
+file(GLOB_RECURSE SOURCES
+    src/*.cpp
+)
 
 add_library(${PROJECT_NAME} SHARED ${SOURCES})
 
